@@ -1,2 +1,2 @@
-data/*.dcm
-data/*.npy
+data/train/
+data/test_images/
