@@ -7,6 +7,9 @@ WORKDIR /app
 # Copy all files from the current directory on the host to the container's /app directory
 COPY . .
 
+# Copy trained model into the container
+COPY models/best_vgg_ffnn_model.keras best_model.keras
+
 # Install dependencies from the requirements file without using cache to reduce image size
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
@@ -14,5 +17,5 @@ RUN pip install --no-cache-dir --upgrade -r requirements.txt
 # - `-w 4`: Uses 4 worker processes for handling requests
 # - `-b 0.0.0.0:7860`: Binds the server to port 7860 on all network interfaces
 # - `app:app`: Runs the Flask app (assuming `app.py` contains the Flask instance named `app`)
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:7860", "--timeout", "120", "app:sales_forecast_api"]
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:7860", "--timeout", "120", "app:predict_pneumonia_backend_api"]
 # NOTE: Disable XSRF protection for easier external access in order to make batch predictions
