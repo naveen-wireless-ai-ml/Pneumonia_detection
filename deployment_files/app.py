@@ -10,7 +10,7 @@ import io
 app = Flask(__name__)
 
 # Load the trained model
-model = tf.keras.models.load_model('best_vgg_ffnn_model.keras', custom_objects={'BinaryFocalCrossentropy': tf.keras.losses.BinaryFocalCrossentropy})
+model = tf.keras.models.load_model('best_model.keras', custom_objects={'BinaryFocalCrossentropy': tf.keras.losses.BinaryFocalCrossentropy})
 
 def preprocess_image(image_bytes, target_size=(192, 192)):
     # Try to read as DICOM first
