@@ -60,7 +60,7 @@ def predict():
             processed_image = preprocess_image(image_bytes)
             prediction = model.predict(processed_image)[0][0]
 
-            result = 'Pneumonia' if prediction >= 0.5 else 'No Pneumonia'
+            result = 'Pneumonia' if prediction >= 0.4302 else 'No Pneumonia'
             confidence = float(prediction)
 
             return jsonify({'prediction': result, 'confidence': confidence})

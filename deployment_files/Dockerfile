@@ -4,11 +4,9 @@ FROM python:3.9-slim
 # Set the working directory inside the container to /app
 WORKDIR /app
 
-# Copy all files from the current directory on the host to the container's /app directory
-COPY . .
-
-# Copy trained model into the container
-COPY models/best_vgg_ffnn_model.keras best_model.keras
+# Copy all files from the deployment_files directory on the host to the container's /app directory
+COPY deployment_files/ ./
+COPY models/best_vgg_ffnn_model.keras ./best_model.keras
 
 # Install dependencies from the requirements file without using cache to reduce image size
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
