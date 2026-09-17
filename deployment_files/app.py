@@ -6,6 +6,7 @@ import tensorflow as tf
 from flask import Flask, request, jsonify
 from PIL import Image
 import io
+import pandas as pd
 
 app = Flask(__name__)
 
