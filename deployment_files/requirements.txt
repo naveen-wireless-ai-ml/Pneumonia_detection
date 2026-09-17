@@ -4,7 +4,6 @@ scikit-learn==1.6.1
 tensorflow==2.20.0
 opencv-python-headless==5.0.0.93
 pydicom==3.0.2
-joblib==1.6.0
 tqdm==4.67.3
 Flask==2.2.2
 gunicorn==23.0.0

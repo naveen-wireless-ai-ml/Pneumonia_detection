@@ -1,4 +1,4 @@
-# Use a minimal base image with Python 3.9 installed
+# Use a minimal base image with Python 3.13 installed
 FROM python:3.13-slim
 
 ENV CUDA_VISIBLE_DEVICES=""
