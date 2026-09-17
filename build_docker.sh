@@ -12,8 +12,11 @@ if [ ! -f "models/$MODEL_NAME" ]; then
 fi
 
 cp "models/$MODEL_NAME" "deployment_files/best_model.keras"
-docker system prune -a --volumes
+# docker system prune -a --volumes
+docker stop pneumonia-detect-backend-api 2>/dev/null || true
+docker rm pneumonia-detect-backend-api 2>/dev/null || true
 cd deployment_files
 docker build -t pneumonia-detect-backend-api .
+gh codespace ports visibility 7860:public
 docker run -p 7860:7860 pneumonia-detect-backend-api
 echo 'Run: curl -X POST http://localhost:7860/predict -F "file=@<filename>"'
