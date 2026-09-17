@@ -1,12 +1,13 @@
 # Use a minimal base image with Python 3.9 installed
 FROM python:3.13-slim
 
+ENV CUDA_VISIBLE_DEVICES=""
+
 # Set the working directory inside the container to /app
 WORKDIR /app
 
 # Copy all files from the deployment_files directory on the host to the container's /app directory
-COPY deployment_files/ ./
-COPY models/best_vgg_ffnn_model.keras ./best_model.keras
+COPY . .
 
 # Install dependencies from the requirements file without using cache to reduce image size
 RUN pip install --no-cache-dir --upgrade -r requirements.txt

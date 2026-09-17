@@ -12,6 +12,11 @@ app = Flask(__name__)
 # Load the trained model
 model = tf.keras.models.load_model('best_model.keras', custom_objects={'BinaryFocalCrossentropy': tf.keras.losses.BinaryFocalCrossentropy})
 
+# Read model information from CSV and get the operating threshold
+model_info = pd.read_csv('model_info.csv', header=None, index_col=0).squeeze("columns")
+operating_threshold = float(model_info['Operating Threshold'])
+print(f"Operating threshold: {operating_threshold}")
+
 def preprocess_image(image_bytes, target_size=(192, 192)):
     # Try to read as DICOM first
     try:
@@ -60,10 +65,10 @@ def predict():
             processed_image = preprocess_image(image_bytes)
             prediction = model.predict(processed_image)[0][0]
 
-            result = 'Pneumonia' if prediction >= 0.4302 else 'No Pneumonia'
-            confidence = float(prediction)
+            result = 'Pneumonia' if prediction >= operating_threshold else 'No Pneumonia'
+            confidence = round(float(prediction) * 100, 2)
 
-            return jsonify({'prediction': result, 'confidence': confidence})
+            return jsonify({'Prediction': result, 'Confidence (%)': confidence})
         except Exception as e:
             return jsonify({'error': f'Error processing image: {str(e)}'}), 500
 
