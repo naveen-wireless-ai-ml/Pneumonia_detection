@@ -2,6 +2,8 @@ import streamlit as st
 import requests
 from PIL import Image
 import io
+import pydicom
+import numpy as np
 
 st.set_page_config(page_title="Pneumonia Detection App", layout="centered")
 
@@ -41,7 +43,30 @@ st.markdown("""
 uploaded_file = st.file_uploader("Choose a DICOM (.dcm), PNG, or JPEG image...", type=["dcm", "png", "jpg", "jpeg"])
 
 if uploaded_file is not None:
-    st.image(uploaded_file, caption='Uploaded X-ray Image', use_column_width=True)
+
+    # Display uploaded image
+    if uploaded_file.name.lower().endswith(".dcm"):
+        try:
+            dicom_ds = pydicom.dcmread(io.BytesIO(uploaded_file.getvalue()))
+            img_array = dicom_ds.pixel_array.astype(np.float32)
+
+            if getattr(dicom_ds, "PhotometricInterpretation", "") == "MONOCHROME1":
+                img_array = np.max(img_array) - img_array
+
+            # Normalize for display
+            img_min = np.min(img_array)
+            img_max = np.max(img_array)
+
+            if img_max > img_min:
+                img_array = (img_array - img_min) / (img_max - img_min)
+
+            st.image(img_array, caption='Uploaded X-ray Image', use_container_width=True)
+
+        except Exception as e:
+            st.error(f"Unable to display DICOM image: {e}")
+    else:
+        st.image(uploaded_file, caption='Uploaded X-ray Image', use_container_width=True)
+
     st.write("")
     st.write("Classifying...")
 
