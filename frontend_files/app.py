@@ -98,7 +98,7 @@ if predict_button:
         # Backend API URL
         backend_url = ("https://special-acorn-r77p9q6q5vg9hp6gq-7860.app.github.dev/predict")
         files = {"file": (uploaded_file.name, uploaded_file.getvalue(), uploaded_file.type)}
-        
+
         with st.spinner("Analyzing X-ray..."):
             try:
                 response = requests.post(backend_url, files=files)
