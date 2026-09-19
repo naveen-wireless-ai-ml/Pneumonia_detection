@@ -65,10 +65,8 @@ def predict():
         try:
             processed_image = preprocess_image(image_bytes)
             prediction = model.predict(processed_image)[0][0]
-
             result = 'Pneumonia' if prediction >= operating_threshold else 'No Pneumonia'
             confidence = round(float(prediction) * 100, 2)
-
             return jsonify({'Prediction': result, 'Confidence (%)': confidence})
         except Exception as e:
             return jsonify({'error': f'Error processing image: {str(e)}'}), 500
